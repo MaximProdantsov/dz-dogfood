@@ -1,0 +1,78 @@
+.footer {
+  
+  width: 100%;
+  background: #FFE44D;
+  height: 194px;
+}
+
+.footer__wrapper{
+  padding: 40px 224px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+  
+}
+
+.card__link {
+	text-decoration: none;
+	color: currentColor;
+}
+
+
+.card__desc {
+  font-size: 16px;
+	padding-top: 14px;
+	font-weight: 600;
+	position: relative;
+}
+
+.card__image {
+	width: 100%;
+	object-fit: contain;
+	margin-bottom: 16px;
+}
+
+.card__price {
+  font-size: 20px;
+	line-height: 24px;
+	font-weight: 800;
+	display: block;
+	margin-bottom: 6px;
+}
+
+.card__weight {
+  font-size: 12px;
+	line-height: 14px;
+	color: #7b8e98;
+	display: block;
+	margin-bottom: 2px;
+}
+
+.card__name {
+  font-size: 16px;
+	line-height: 1.25;
+}
+
+.card__cart {
+  margin-top: auto;
+}
+
+.btn {
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  border-radius: 55px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color .3s;
+}
+.btn_type_primary {
+  background-color: #FFE44D;
+}
+.btn_type_primary:hover {
+  background-color: #FFAA0D;
+	color: #F44336;
+}
