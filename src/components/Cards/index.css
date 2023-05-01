@@ -10,18 +10,19 @@
 }
 
 .stick {
-  display: flex;
-  justify-content: space-between
+	position: relative;
 }
 
 
 
 .stick__right {
+	position: absolute;
   right: 0px;
   top: 0px;
 }
 
 .card__discount {
+	position: absolute;
 	padding: 2px 8px;
 	font-weight: 800;
 	font-size: 16px;

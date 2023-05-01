@@ -6,14 +6,14 @@ export const Cards = ({product}) => {
 
   return <div className="cards">
     <div className="stick">
-      {!! product.discount &&  <div className="stic__left__promotion card__discount">-{product.discount}</div>}
+      {!! product.discount &&  <div className="stic__left__promotion card__discount">-{product.discount}%</div>}
       <div className="stick__right"><Like/></div>
     </div>
     <a href="/" className='card__link'>
                 <img src={product.pictures} alt="food" className='card__image__product' />
                 <div className='card__desc'>
                     <span className='card__price'>{product.price}p</span>
-                    <span className='card__weight'>80</span>
+                    <span className='card__weight'>{product.wight}</span>
                 </div>
                 <p className='card__name'>{product.name}</p>
             </a>
