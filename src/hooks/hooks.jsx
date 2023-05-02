@@ -8,7 +8,7 @@ export const useDelay = (path)=>{
   useEffect(()=>{
     const timeotId = setTimeout(() => {
       setDelayValue(path)
-    }, 1300);
+    }, 800);
     return () => clearTimeout(timeotId)
   }, [path]
   
