@@ -50,6 +50,23 @@ class Api {
     })
   }
 
+  addLike(productId) {
+    return fetch(`${this.baseUrl}/products/likes/${productId}`, {
+      method: "PUT",
+      headers: this.headers,
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
+  deleteLike(productId) {
+    return fetch(`${this.baseUrl}/products/likes/${productId}`, {
+      method: "DELETE",
+      headers: this.headers,
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
 
 
 
