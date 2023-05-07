@@ -4,10 +4,9 @@
 }
 
 .header__wrapper {
-  padding: 12px 224px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  padding: 12px 224px;
   align-items: center;
+  justify-content: space-between;
   gap: 80px;
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css"
 import { ReactComponent as Like } from "../img/like.svg";
+import { Link } from "react-router-dom";
 // import { api } from "../../api/api";
 
 
@@ -22,14 +23,14 @@ export const Cards = ({ product, userId, handleProductLike }) => {
 
 
     </div>
-    <a href="/" className='card__link'>
+    <Link to={`product/${product._id}`} className='card__link'>
       <img src={product.pictures} alt="food" className='card__image__product' />
       <div className='card__desc'>
-        <span className='card__price'>{product.price}p</span>
+        <span className='card__price'>{product.price} p</span>
         <span className='card__weight'>{product.wight}</span>
       </div>
       <p className='card__name'>{product.name}</p>
-    </a>
+    </Link>
     <span className='card__card btn btn_type_primary'>В Корзину</span>
   </div>
 }

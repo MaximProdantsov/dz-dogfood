@@ -68,6 +68,15 @@ class Api {
     })
   }
 
+  getProductId(productId) {
+    return fetch(`${this.baseUrl}/products/${productId}`, {
+      method: "GET",
+      headers: this.headers,
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
 
 
   // другие методы работы с API
