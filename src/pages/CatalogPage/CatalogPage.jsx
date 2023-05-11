@@ -1,10 +1,12 @@
 import React from "react";
+import { useContext } from "react";
 import { CardList } from "../../components/CardList/CardList";
 import { NotFound } from "../../components/NotFound/NotFound";
+import { CardsContext } from "../../context/context";
 import s from './index.module.css'
 
-export const CatalogPage = ({ cards, user, handleProductLike, search, onSort }) => {
-
+export const CatalogPage = () => {
+  const { cards, search, onSort, setSearch } = useContext(CardsContext)
   const sklonenie = (number, txt, cases = [2, 0, 1, 1, 1, 2]) => txt[(number % 100 > 4 && number % 100 < 20) ? 2 :
     cases[(number % 10 < 5) ? number % 10 : 5]];
 
@@ -19,7 +21,7 @@ export const CatalogPage = ({ cards, user, handleProductLike, search, onSort }) 
             return <span className={s.sortItem} key={el.id} onClick={() => onSort(el.id)}>{el.title}</span>
           })}
         </div>}
-        {cards.length === 0 ? <NotFound/> : <CardList cards={cards} userId={user._id} handleProductLike={handleProductLike} />}
+        {cards.length === 0 ? <NotFound setSearch={setSearch}/> : <CardList cards={cards}  />}
       </div>
     </>
   )

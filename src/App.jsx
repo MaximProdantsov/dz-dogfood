@@ -4,12 +4,13 @@ import { Route, Routes } from 'react-router';
 import { api } from './api/api';
 
 import './App.css';
-// import { CardList } from './components/CardList/CardList';
 import { Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
 import { NotFound } from './components/NotFound/NotFound';
+import { CardsContext, UserContext } from './context/context';
 import { useDelay } from './hooks/hooks';
 import { CatalogPage } from './pages/CatalogPage/CatalogPage';
+import { FavoritesPage } from './pages/FavoritesPage/FavoritesPage';
 import { ProductPage } from './pages/ProductPage/ProductPage';
 // import data from "./data/data.json"
 
@@ -17,14 +18,20 @@ function App() {
   const [search, setSearch] = useState(undefined)
   const [cards, setСards] = useState([])
   const [user, setUser] = useState({})
+  const [favoriteCards, setFavoriteCards] = useState([])
+
 
   const delayValueApp = useDelay(search)
 
-  const handleProductLike = (product, isLike) => {
-    (isLike ? api.deleteLike(product._id) : api.addLike(product._id))
+  const handleProductLike = (product, wasLike) => {
+    (wasLike ? api.deleteLike(product._id) : api.addLike(product._id))
       .then((uppdateCards) => {
         const newCards = cards.map((e) => e._id === uppdateCards._id ? uppdateCards : e)
         setСards(newCards)
+        wasLike ?
+          setFavoriteCards((state) => state.filter((el) => el._id !== uppdateCards._id))
+          :
+          setFavoriteCards((state) => [uppdateCards, ...state])
       })
   }
 
@@ -36,7 +43,6 @@ function App() {
 
 
   const onSort = (sortId) => {
-    console.log(sortId);
     switch (sortId) {
       case 'cheap':
         const sortCardCheap = cards.sort((a, b) => a.price - b.price)
@@ -47,7 +53,7 @@ function App() {
         setСards([...sortCardExpensive])
         break;
       case 'new':
-        const sortCardNew = cards.filter((el) => el.tags.includes('new'))
+        const sortCardNew = cards.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         setСards([...sortCardNew])
         break;
       case 'discount':
@@ -63,7 +69,6 @@ function App() {
           getAverage(b.reviews) - getAverage(a.reviews))
         setСards([...sortCardRating])
         break;
-
       default:
         break;
     }
@@ -75,20 +80,28 @@ function App() {
   }, [delayValueApp])
 
   useEffect(() => {
-    api.getProductList().then((res) => setСards(res.products))
-    api.getUserMe().then((res) => setUser(res))
+    Promise.all([api.getProductList(), api.getUserMe()]).then(([data, userId]) => {
+      setСards(data.products)
+      setUser(userId)
+      const cardsLikes = data.products.filter((e) => e.likes.includes(userId._id))
+      setFavoriteCards(cardsLikes)
+    })
   }, [])
 
+
   return <div>
-    <Header setSearch={setSearch} />
-    <Routes>
-      <Route path='/' element={<CatalogPage cards={cards} user={user} handleProductLike={handleProductLike} search={search} onSort={onSort} />} />
-      <Route path='product/:id' element={<ProductPage />} />
-      <Route path='*' element={<NotFound/>} />
-
-    </Routes>
-
-    <Footer />
+    <CardsContext.Provider value={{ cards, handleProductLike, search, onSort, setSearch, favoriteCards }}>
+      <UserContext.Provider value={user}>
+        <Header setSearch={setSearch} favoriteCards={favoriteCards} />
+        <Routes>
+          <Route path='/' element={<CatalogPage />} />
+          <Route path='product/:id' element={<ProductPage />} />
+          <Route path='*' element={<NotFound />} />
+          <Route path='/favorites' element={<FavoritesPage />} />
+        </Routes>
+        <Footer />
+      </UserContext.Provider>
+    </CardsContext.Provider>
   </div>
 
 }

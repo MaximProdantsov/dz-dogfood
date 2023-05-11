@@ -1,16 +1,14 @@
 import React from "react";
-import {  useNavigate } from "react-router-dom";
+import { BtmBlack } from "../BtmBlack/BtmBlack";
 import s from "./index.module.css"
 
 export const Product = ({ product }) => {
-  const navigation = useNavigate()
-  
+
 
   return (<div className={s.product}>
     <div className={s.titleWrapper}>
 
-      <span className={s.btm__black} onClick={() => { navigation('/') }}>{"<"} Назад</span>
-
+      <BtmBlack />
 
       <span className={s.productTitle}>{product.name}</span>
       <div className={s.rating}>

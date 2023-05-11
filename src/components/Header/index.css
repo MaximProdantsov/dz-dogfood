@@ -10,3 +10,27 @@
   justify-content: space-between;
   gap: 80px;
 }
+
+.icons {
+  display: flex;
+  gap: 34px;
+}
+
+.favorites__icons {
+  position: relative;
+}
+
+.babl {
+  position: absolute;
+  padding: 1px 4px;
+  border: 2px solid #FFE44D;
+  border-radius: 20px;
+  background: #01A54E;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 9px;
+  line-height: 12px;
+  text-align: center;
+  left: 11px;
+  bottom: 15px;
+}

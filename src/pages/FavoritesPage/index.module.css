@@ -1,0 +1,19 @@
+.favoritesPage {
+  padding: 16px 224px;
+}
+
+.btm__black {
+  font-size: 14px;
+  color: #7B8E98;
+  cursor: pointer;
+  /* width: fit-content; */
+}
+
+.title {
+  
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 32px;
+  color: #1A1A1A;
+
+}

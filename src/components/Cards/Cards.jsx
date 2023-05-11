@@ -2,17 +2,18 @@ import React from "react";
 import "./index.css"
 import { ReactComponent as Like } from "../img/like.svg";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CardsContext, UserContext } from "../../context/context";
 // import { api } from "../../api/api";
 
 
-export const Cards = ({ product, userId, handleProductLike }) => {
-
-  const isLike = product.likes.some((el) => el === userId)
-
+export const Cards = ({ product }) => {
+  const { handleProductLike} = useContext(CardsContext)
+  const { _id}  = useContext(UserContext)
+  const isLike = product.likes.some((el) => el === _id)
   const pressLike = () => {
     handleProductLike(product, isLike)
   }
-
 
   return <div className="cards">
     <div className="stick">

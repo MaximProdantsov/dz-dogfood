@@ -3,11 +3,11 @@ import { Cards } from "../Cards/Cards";
 import "./index.css"
 
 
-export const CardList = ({cards, userId, handleProductLike}) => {
+export const CardList = ({cards}) => {
  
   return <section className="cardList">
    {cards.map((el)=>{
-    return <Cards product = {el} key={el._id} userId={userId} handleProductLike={handleProductLike}/>
+    return <Cards product = {el} key={el._id}  />
    })}
   </section>
 }
