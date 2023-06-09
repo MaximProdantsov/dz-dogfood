@@ -14,3 +14,4 @@ const {favoriteCards} = useContext (CardsContext)
     <CardList cards={favoriteCards}  />
   </div>
 }
+
