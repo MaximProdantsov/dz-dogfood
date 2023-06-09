@@ -16,5 +16,7 @@ export const ProductPage = () => {
   }, [id])
 
 
-  return <Product product={product}/>
+  return <>
+  { !!Object.keys(product).length ?  <Product product={product}/> : <div>Загрузка</div>}
+  </>
 }

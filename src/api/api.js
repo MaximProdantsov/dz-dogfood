@@ -77,6 +77,34 @@ class Api {
     })
   }
 
+  addProductReviews(productId, data) {
+    return fetch(`${this.baseUrl}/products/review/${productId}`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(data)
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
+  deleteProductReviews(productId, reviewId) {
+    return fetch(`${this.baseUrl}/products/review/${productId}/${reviewId}`, {
+      method: "DELETE",
+      headers: this.headers,
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
+  getProductIdAll(productId) {
+    return fetch(`${this.baseUrl}/products/review/${productId}`, {
+      method: "GET",
+      headers: this.headers,
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
 
 
   // другие методы работы с API

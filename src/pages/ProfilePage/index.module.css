@@ -1,0 +1,10 @@
+.container {
+  padding: 50px 340px;
+}
+
+.title{
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 32px;
+  color: #1A1A1A;
+}

@@ -1,8 +1,64 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { discountNumber, sklonenie } from "../../utilities/utilities";
 import { BtmBlack } from "../BtmBlack/BtmBlack";
 import s from "./index.module.css"
+import { ReactComponent as Auto } from "../img/auto.svg";
+import { ReactComponent as Medal } from "../img/medal.svg";
+import { ReactComponent as Like } from "../img/like.svg";
+import { CardsContext, UserContext } from "../../context/context";
+import { useState } from "react";
+import { Modal } from "../Modal/Modal";
+import { useForm } from "react-hook-form";
+import { api } from "../../api/api";
+import { useCallback } from "react";
+import { Rating } from "../Rating/Rating";
+
+const options = { year: 'numeric', month: 'long', day: 'numeric' }
 
 export const Product = ({ product }) => {
+  const [isLike, setIsLike] = useState(false)
+  const [productIdReview, setProductIdReview] = useState({})
+  const [myReting, setMyReting] = useState(5)
+  const { _id } = useContext(UserContext)
+  const { handleProductLike, setModalActiv, modalActiv } = useContext(CardsContext)
+  const { register, handleSubmit, reset } = useForm({});
+
+
+
+  const handleLike = useCallback(() => {
+    handleProductLike(product, isLike)
+    setIsLike(!isLike)
+  }, [product, isLike, handleProductLike])
+
+  const onSubmit = useCallback(async ({ text }) => {
+    const res = await api.addProductReviews(product._id, { text, rating: myReting })
+    setProductIdReview(res.reviews)
+    reset()
+    setModalActiv(false)
+  }, [reset, product._id, setModalActiv, myReting])
+
+  const deletReviews = useCallback(async reviewId => {
+    const res = await api.deleteProductReviews(product._id, reviewId)
+    setProductIdReview(res.reviews)
+  }, [product._id])
+
+  const getAverage = (reviews) => {
+    const sum = reviews.reduce((acc, el) => acc + el.rating, 0);
+    const length = reviews.length;
+    return Math.floor(sum / length)
+  };
+
+
+  useEffect(() => {
+    const Like = product.likes.some((el) => el === _id)
+    setIsLike(Like)
+  }, [_id, product.likes])
+
+  useEffect(() => {
+    api.getProductIdAll(product._id)
+      .then((data) => setProductIdReview(data))
+      .catch(() => console.log('Ошибка'))
+  }, [product._id])
 
 
   return (<div className={s.product}>
@@ -11,25 +67,86 @@ export const Product = ({ product }) => {
       <BtmBlack />
 
       <span className={s.productTitle}>{product.name}</span>
-      <div className={s.rating}>
-        <span>Artikul</span>
-        <span>Rate</span>
-      </div>
+      {!!Object.keys(productIdReview).length &&
+       <div className={s.rating}>
+        <Rating rating={getAverage(productIdReview)} />
+        <span>{productIdReview.length} {sklonenie(productIdReview.length, ['отзыв', 'отзыва', 'отзывов'])}</span>
+      </div>}
     </div>
     <div className={s.imgWrapper}>
       <img className={s.img} src={product.pictures} alt="Ссылка на картинку" />
-
+      <div className={s.container__left}>
+        <div className={s.desc}>
+          <span className={`${s.price}   ${!!product.discount && s.oldPrice}`}>{product.price}р</span>
+          {!!product.discount &&
+            <span className={`${s.price}   ${!!product.discount && s.newPrice}`}>{discountNumber(product.price, product.discount)}р</span>}
+        </div >
+        <div className={s.controls}>
+          <div className={s.controls__card}>
+            <span className={s.controls__cart__plus}>-</span>
+            <span className={s.controls__cart__num}>0</span>
+            <span className={s.controls__cart__plus}>+</span>
+          </div>
+          <span className={s.btn}>В корзину</span>
+        </div>
+        <button className={isLike ? s.Like : s.noLike} onClick={() => handleLike()}>
+          <Like />
+          <span className={s.text__favorites}>{isLike ? 'В избранном' : 'В избранное'}</span>
+        </button>
+        <div className={s.delivery}>
+          <Auto />
+          <div>
+            <span className={s.text__header}>Доставка по всему Миру! </span>
+            <p className={s.text}>Доставка курьером — <span className={s.bold}>  от 399 ₽</span>  </p>
+            <p className={s.text}>Доставка в пункт выдачи — <span className={s.bold}> от 199 ₽</span></p>
+          </div>
+        </div>
+        <div className={s.delivery}>
+          <Medal />
+          <div >
+            <span className={s.text__header}>Гарантия качества </span>
+            <p className={s.text}>Если Вам не понравилось качество нашей <br />продукции, мы вернем деньги,<br /> либо сделаем все возможное, чтобы <br />удовлетворить ваши нужды.</p>
+          </div>
+        </div>
+      </div>
     </div>
-
     <div className={s.desc}>
-      <span className={s.price}>{product.price} р</span>
-    </div>
-    <div className={s.desc}>
-
-
       <span className={s.price}>Описание</span>
-
       <span>{product.description}</span>
+    </div>
+    <div className={s.reviews}>
+      <span className={s.price}>Отзывы</span>
+      <button className={s.btn__review} onClick={() => { setModalActiv(true) }}>Написать отзыв</button>
+
+      {<Modal modalActiv={modalActiv}>
+        {modalActiv && <div className={s.container__form}>
+          <div className={s.close} onClick={() => setModalActiv(false)}>x</div>
+          <h1>Ваш отзыв</h1>
+          <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+            <Rating rating={myReting} setMyReting={setMyReting} isEditable={true}/>
+            <textarea className={s.input} type="text" {...register("text", { required: true })} placeholder="Напешите отзыв" />
+            <button className={s.btn__review} type="submit" onClick={() => { }}>Отправить отзыв</button>
+          </form>
+        </div>}
+      </Modal>}
+      {!!Object.keys(productIdReview).length &&
+        productIdReview
+          .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+          .map((e) => <div className={s.reviews} key={e._id}>
+            <div className={s.separator} />
+            <div className={s.reviews__user}>
+              <img className={s.img__user} src={e.author.avatar} alt='Аватар' />
+              <span className={s.name}>{e.author.name}</span>
+
+              <span className={s.text__favorites}>{new Date(e.created_at).toLocaleDateString('ru-RU', options)}</span>
+              {_id === e.author._id &&
+                <button className={s.btn__review} onClick={() => { deletReviews(e._id) }}>Удалить Ваш отзыв</button>}
+            </div>
+            <Rating rating={e.rating} />
+            <div>{e.text}</div>
+          </div>)
+      }
+
     </div>
   </div>)
 }

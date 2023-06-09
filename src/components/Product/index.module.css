@@ -6,6 +6,11 @@
   margin: 0 auto;
 }
 
+.container__left {
+  display: flex;
+  gap: 20px;
+  flex-direction: column
+}
 
 
 
@@ -15,7 +20,6 @@
   display: flex;
   flex-direction: column;
   margin-top: 23px;
-  /* gap: 100px; */
   margin-bottom: 40px;
   padding-left: 250px;
 }
@@ -29,7 +33,8 @@
 }
 
 .imgWrapper {
-  flex: 1;
+  display: flex;
+  gap: 200px;
 }
 
 .img {
@@ -41,12 +46,26 @@
   flex-shrink: 0;
 }
 
-.oldPrice {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  text-decoration: line-through;
-  display: block;
+.reviews {
+  max-width: 992px;
+  margin-top: 30px;
+}
+
+.separator {
+  height: 1px;
+  background: #ECEFF1;
+  margin-bottom: 10px;
+}
+.reviews__user{
+  display: flex;
+  gap: 10px;
+  padding: 10px 0 10px 0;
+  align-items: center;
+}
+.img__user{
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
 }
 
 .price {
@@ -57,12 +76,27 @@
   margin-bottom: 24px;
 }
 
+
+.oldPrice {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration: line-through;
+  display: block;
+}
+
+.newPrice {
+  color: red
+}
+
 .delivery {
   display: flex;
+  gap: 10px;
   background-color: rgba(236, 239, 241, 0.6);
   border-radius: 12px;
   padding: 12px;
   align-items: flex-start;
+  width: 343px;
 }
 
 .delivery:not(.delivery:last-child) {
@@ -77,8 +111,13 @@
   font-size: 16px;
   line-height: 20px;
   font-weight: 700;
-  margin-bottom: 8px;
-  margin-top: 0;
+}
+
+.text__header {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+
 }
 
 .text {
@@ -87,13 +126,22 @@
   font-weight: 400;
 }
 
+.bold {
+  font-weight: 700;
+}
+
+.text__favorites {
+  font-size: 14px;
+  color: #7B8E98;
+  cursor: pointer;
+
+}
+
+
 .text:not(.text:last-child) {
   margin-bottom: 8px;
 }
 
-.bold {
-  font-weight: 700;
-}
 
 .title {
   font-size: 24px;
@@ -136,23 +184,29 @@
   flex-direction: column;
 }
 
-.favorite {
-  background-color: transparent;
-  border: none;
+.Like {
   display: flex;
-  align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  background: none;
   cursor: pointer;
-}
-
-.favorite svg {
-  fill: #ffffff;
-}
-
-.favoriteActive svg {
+  border: none;
   fill: red;
-  stroke: red;
+  width: fit-content;
+
+
+}
+
+.noLike {
+  display: flex;
+  gap: 10px;
+  background: none;
+  cursor: pointer;
+  border: none;
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+  width: fit-content;
+
 }
 
 @media (max-width: 1000px) {
@@ -182,14 +236,20 @@
   }
 }
 
-/* // БЭМ - блок элемент модификатор */
 .controls {
+  display: flex;
+  gap: 20px;
+}
+
+.controls__card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 24px;
-
+  border: 1px solid #cfd8dc;
+  background-color: #fff;
+  border-radius: 100px;
+  padding: 0 20px;
 
 }
 
@@ -220,7 +280,6 @@
   outline: none;
   background-color: transparent;
   height: 100%;
-  width: 40px;
   cursor: pointer;
   font-size: 24px;
 }
@@ -228,10 +287,9 @@
 .controls__cart__num {
   font-size: 21px;
   font-weight: 700;
-  line-height: 24px;
-  width: 30px;
+  /* line-height: 24px;
   display: inline-block;
-  text-align: center;
+  text-align: center; */
 }
 
 .titleWrapper {
@@ -240,9 +298,70 @@
   gap: 10px;
 }
 
-/* // .controls .controls__cart .controls__cart__red {
-//   text-align: center;
-// } */
+.btn {
+  background-color: #FFE44D;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  border-radius: 55px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color .3s;
+  width: 100px;
+}
+
+.btn:hover {
+  background-color: #FFAA0D;
+  color: #F44336;
+  cursor: pointer;
+}
+
+.btn__review {
+  border: 1px solid #CFD8DC;
+  border-radius: 87px;
+  font-weight: 700;
+  line-height: 20px;
+  transition: background-color .3s;
+  width: 162px;
+  height: 40px;
+  margin-left: auto;
+}
+
+.btn__review:hover {
+  background-color: rgba(255, 228, 77, 1);
+  cursor: pointer;
+}
+.container__form{
+  padding: 16px;
+  position: relative;
+  width: 300px;
+  height: max-content;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgba(40, 41, 61, 0.08), 0px 20px 32px rgba(96, 97, 112, 0.24);
+  border-radius: 20px;
+}
+
+.close{
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  font-size: 25px;
+  cursor: pointer;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input {
+  border: 1px solid #CFD8DC;
+  border-radius: 12px;
+  padding: 7px 16px;
+  outline: none;
+  height: 100px;
+}
 
 .link {
   color: yellow;

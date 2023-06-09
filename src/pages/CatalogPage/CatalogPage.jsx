@@ -3,12 +3,12 @@ import { useContext } from "react";
 import { CardList } from "../../components/CardList/CardList";
 import { NotFound } from "../../components/NotFound/NotFound";
 import { CardsContext } from "../../context/context";
+import { sklonenie } from "../../utilities/utilities";
 import s from './index.module.css'
 
 export const CatalogPage = () => {
   const { cards, search, onSort, setSearch } = useContext(CardsContext)
-  const sklonenie = (number, txt, cases = [2, 0, 1, 1, 1, 2]) => txt[(number % 100 > 4 && number % 100 < 20) ? 2 :
-    cases[(number % 10 < 5) ? number % 10 : 5]];
+  
 
   const sortItem = [{ id: 'popular', title: 'Популярные' }, { id: 'new', title: 'Новинки' }, { id: 'cheap', title: 'Сначала дешевые' }, { id: 'expensive', title: 'Сначала дорогие' }, { id: 'rating', title: 'По рейтингу' }, { id: 'discount', title: 'По скидке' }]
 

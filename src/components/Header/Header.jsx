@@ -1,4 +1,3 @@
-import React from "react";
 import "./index.css"
 import { ReactComponent as Logo } from "../img/logo.svg"
 import { Search } from "../Search/Search";
@@ -12,11 +11,10 @@ import { CardsContext } from "../../context/context";
 
 
 export const Header = () => {
-  const {setSearch, favoriteCards} = useContext(CardsContext) 
+  const { favoriteCards, setModalActiv } = useContext(CardsContext)
 
-  const setSearchQuery = (query) => {
-    setSearch(query)
-  }
+
+
 
   const location = useLocation()
 
@@ -25,16 +23,23 @@ export const Header = () => {
       <Link to='/'>
         <Logo />
       </Link>
-      {location.pathname === "/" && <Search setSearch={setSearchQuery} />}
+      <Link to='/profile/data'>
+        <button>profile</button>
+      </Link>
+      {location.pathname === "/" && <Search />}
       <div className="icons">
         <div className="favorites__icons">
           <Link to="/favorites">
             <Favorites />
-            {!! favoriteCards.length && <span className="babl">{favoriteCards.length}</span>}
+            {!!favoriteCards.length && <span className="babl">{favoriteCards.length}</span>}
           </Link>
         </div>
         <Suitcase />
-        <Dog />
+        <Link to={'/registration'} onClick={() => setModalActiv(true)}>
+        <Dog ></Dog>
+        </Link>
+
+
       </div>
     </div>
   </header>
