@@ -15,14 +15,14 @@ export const Rating = ({ rating, setMyReting = () => { }, isEditable = false }) 
       return
     }
     setMyReting(r)
-  }, [setMyReting, isEditable])
+  }, [isEditable])
 
-  const changeDysplay = (r) => {
+  const changeDysplay = useCallback((r) => {
     if (!isEditable) {
       return
     }
     paintStar(r)
-  }
+  },[isEditable])
 
   const paintStar = useCallback((rate) => {
     const filledStar = ratingArr.map((e, i) =>

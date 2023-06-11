@@ -88,6 +88,13 @@
   left: 280px;
   cursor: pointer;
 }
+
+.eye__form__recovery {
+  position: absolute;
+  top: 250px;
+  left: 280px;
+  cursor: pointer;
+}
 .error{
   color: #F44336;
   font-size: 15px;

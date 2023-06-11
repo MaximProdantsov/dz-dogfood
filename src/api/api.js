@@ -105,9 +105,48 @@ class Api {
     })
   }
 
+  addUserAuthorization(data) {
+    return fetch(`${this.baseUrl}/signin`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(data)
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
+  addUserRegistration(data) {
+    return fetch(`${this.baseUrl}/signup `, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(data)
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
+  addPasswordReset(data) {
+    return fetch(`${this.baseUrl}/forgot-password `, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(data)
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
+
+  addPasswordResetToken(data, token) {
+    return fetch(`${this.baseUrl}/password-reset/${token} `, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(data)
+    }).then((res) => {
+      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
+    })
+  }
 
 
-  // другие методы работы с API
+
 }
 
 export const api = new Api(config);

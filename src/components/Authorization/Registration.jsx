@@ -6,6 +6,7 @@ import { ReactComponent as EveClose } from "../img/eye-close.svg";
 import { useContext } from "react";
 import { CardsContext } from "../../context/context";
 import { useNavigate } from "react-router";
+import { api } from "../../api/api";
 
 
 export const Registration = () => {
@@ -14,7 +15,15 @@ export const Registration = () => {
   const { setModalActiv } = useContext(CardsContext)
   const navigate = useNavigate();
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const res =  await api.addUserRegistration({...data, group: "group-12"});
+      setModalActiv(false)
+    } catch (error) {
+      alert(error)
+    }
+  }
+
   const togglePassword = () => {
     setIsSHown((isShown) => !isShown);
   }
@@ -24,11 +33,11 @@ export const Registration = () => {
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
       <input className={s.input} type="text" {...register("email", { required: true })} placeholder="Email" />
 
-      <input className={s.input} type={isShown ? "text" : "password"} {...register("password", { required: true, minLength: 6, pattern: /^[A-Za-z]+$/i })} placeholder="Пароль" />
+      <input className={s.input} type={isShown ? "text" : "password"} {...register("password", { required: true, minLength: 6, pattern: /^[a-zA-Z0-9]+/ })} placeholder="Пароль" />
       {errors.email && <span className={s.error}>Введите email</span>}
       {errors.password && <span className={s.error}>Введите пароль</span>}
       {errors.password && <span className={s.error}> Не менее 6 символов</span>}
-      {errors.password && <span className={s.error}>Только символы латинского алфавита</span>}
+      {errors.password && <span className={s.error}>Пароль должен состоять из цифр и латинских букв верхнего и нижнего регистра</span>}
 
 
       <div className={s.text}>Регистрируясь на сайте, вы соглашаетесь с нашими Правилами и Политикой конфиденциальности и соглашаетесь на информационную рассылку.</div>
