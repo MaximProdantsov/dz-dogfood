@@ -3,10 +3,10 @@ import { Cards } from "../Cards/Cards";
 import "./index.css"
 
 
-export const CardList = ({cards}) => {
+export const CardList = ({products}) => {
  
   return <section className="cardList">
-   {cards.map((el)=>{
+   {products.map((el)=>{
     return <Cards product = {el} key={el._id}  />
    })}
   </section>

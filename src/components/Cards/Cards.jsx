@@ -2,17 +2,17 @@ import React from "react";
 import "./index.css"
 import { ReactComponent as Like } from "../img/like.svg";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { CardsContext, UserContext } from "../../context/context";
-// import { api } from "../../api/api";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChangeProducrLike } from "../../storage/slice/productsSlice";
 
 
 export const Cards = ({ product }) => {
-  const { handleProductLike} = useContext(CardsContext)
-  const { _id}  = useContext(UserContext)
+  const { _id } = useSelector(s => s.user.data)
+  const dispatch = useDispatch()
+
   const isLike = product.likes.some((el) => el === _id)
   const pressLike = () => {
-    handleProductLike(product, isLike)
+    dispatch(fetchChangeProducrLike({product, wasLike: isLike}))
   }
 
   return <div className="cards">

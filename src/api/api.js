@@ -7,6 +7,10 @@ const config = {
   groupId: '/v2/group-12'
 }
 
+const onResponse = (res) => {
+  return res.ok ? res.json() : res.json().then(res => Promise.reject(res))
+}
+
 class Api {
   constructor(data) {
     this.baseUrl = data.baseUrl
@@ -18,63 +22,65 @@ class Api {
     return fetch(`${this.baseUrl}/products`, {
       method: "GET",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   getAllUsers() {
     return fetch(`${this.baseUrl}/users`, {
       method: "GET",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   getUserMe() {
     return fetch(`${this.baseUrl}/users/me`, {
       method: "GET",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
+  }
+
+  uppdateUserMe(data) {
+    return fetch(`${this.baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(data)
+    }).then(onResponse)
+  }
+
+  uppdateUserAvatar(data) {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify(data)
+    }).then(onResponse)
   }
 
   searchProduct(path) {
     return fetch(`${this.baseUrl}/products/search?query=${path}`, {
       method: "GET",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   addLike(productId) {
     return fetch(`${this.baseUrl}/products/likes/${productId}`, {
       method: "PUT",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   deleteLike(productId) {
     return fetch(`${this.baseUrl}/products/likes/${productId}`, {
       method: "DELETE",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   getProductId(productId) {
     return fetch(`${this.baseUrl}/products/${productId}`, {
       method: "GET",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   addProductReviews(productId, data) {
@@ -82,27 +88,21 @@ class Api {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(data)
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   deleteProductReviews(productId, reviewId) {
     return fetch(`${this.baseUrl}/products/review/${productId}/${reviewId}`, {
       method: "DELETE",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   getProductIdAll(productId) {
     return fetch(`${this.baseUrl}/products/review/${productId}`, {
       method: "GET",
       headers: this.headers,
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   addUserAuthorization(data) {
@@ -110,9 +110,7 @@ class Api {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(data)
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   addUserRegistration(data) {
@@ -120,9 +118,7 @@ class Api {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(data)
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   addPasswordReset(data) {
@@ -130,9 +126,7 @@ class Api {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(data)
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
   addPasswordResetToken(data, token) {
@@ -140,9 +134,7 @@ class Api {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify(data)
-    }).then((res) => {
-      return res.ok ? res.json() : Promise.reject('что-то пошло не так, данные не получены')
-    })
+    }).then(onResponse)
   }
 
 

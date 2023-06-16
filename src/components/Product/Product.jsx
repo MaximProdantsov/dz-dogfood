@@ -1,17 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { discountNumber, sklonenie } from "../../utilities/utilities";
 import { BtmBlack } from "../BtmBlack/BtmBlack";
 import s from "./index.module.css"
 import { ReactComponent as Auto } from "../img/auto.svg";
 import { ReactComponent as Medal } from "../img/medal.svg";
 import { ReactComponent as Like } from "../img/like.svg";
-import { CardsContext, UserContext } from "../../context/context";
 import { useState } from "react";
 import { Modal } from "../Modal/Modal";
 import { useForm } from "react-hook-form";
 import { api } from "../../api/api";
 import { useCallback } from "react";
 import { Rating } from "../Rating/Rating";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChangeProducrLike } from "../../storage/slice/productsSlice";
+import { setModalActiv } from "../../storage/slice/modalSlice";
 
 const options = { year: 'numeric', month: 'long', day: 'numeric' }
 
@@ -19,23 +21,26 @@ export const Product = ({ product }) => {
   const [isLike, setIsLike] = useState(false)
   const [productIdReview, setProductIdReview] = useState({})
   const [myReting, setMyReting] = useState(5)
-  const { _id } = useContext(UserContext)
-  const { handleProductLike, setModalActiv, modalActiv } = useContext(CardsContext)
+  const { _id } = useSelector(s => s.user.data)
+  const {modalActiv} = useSelector(s=>s.modal)
+  const dispath = useDispatch()
+
+
   const { register, handleSubmit, reset } = useForm({});
 
 
 
   const handleLike = useCallback(() => {
-    handleProductLike(product, isLike)
+    dispath(fetchChangeProducrLike({product, wasLike: isLike}))
     setIsLike(!isLike)
-  }, [product, isLike, handleProductLike])
+  }, [product, isLike, dispath])
 
   const onSubmit = useCallback(async ({ text }) => {
     const res = await api.addProductReviews(product._id, { text, rating: myReting })
     setProductIdReview(res.reviews)
     reset()
-    setModalActiv(false)
-  }, [reset, product._id, setModalActiv, myReting])
+    dispath(setModalActiv(false))
+  }, [reset, product._id, dispath, myReting])
 
   const deletReviews = useCallback(async reviewId => {
     const res = await api.deleteProductReviews(product._id, reviewId)
@@ -68,10 +73,10 @@ export const Product = ({ product }) => {
 
       <span className={s.productTitle}>{product.name}</span>
       {!!Object.keys(productIdReview).length &&
-       <div className={s.rating}>
-        <Rating rating={getAverage(productIdReview)} />
-        <span>{productIdReview.length} {sklonenie(productIdReview.length, ['отзыв', 'отзыва', 'отзывов'])}</span>
-      </div>}
+        <div className={s.rating}>
+          <Rating rating={getAverage(productIdReview)} />
+          <span>{productIdReview.length} {sklonenie(productIdReview.length, ['отзыв', 'отзыва', 'отзывов'])}</span>
+        </div>}
     </div>
     <div className={s.imgWrapper}>
       <img className={s.img} src={product.pictures} alt="Ссылка на картинку" />
@@ -116,14 +121,14 @@ export const Product = ({ product }) => {
     </div>
     <div className={s.reviews}>
       <span className={s.price}>Отзывы</span>
-      <button className={s.btn__review} onClick={() => { setModalActiv(true) }}>Написать отзыв</button>
+      <button className={s.btn__review} onClick={() => { dispath(setModalActiv(true))}}>Написать отзыв</button>
 
-      {<Modal modalActiv={modalActiv}>
+      {<Modal>
         {modalActiv && <div className={s.container__form}>
-          <div className={s.close} onClick={() => setModalActiv(false)}>x</div>
+          <div className={s.close} onClick={() => dispath(setModalActiv(false))}>x</div>
           <h1>Ваш отзыв</h1>
           <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-            <Rating rating={myReting} setMyReting={setMyReting} isEditable={true}/>
+            <Rating rating={myReting} setMyReting={setMyReting} isEditable={true} />
             <textarea className={s.input} type="text" {...register("text", { required: true })} placeholder="Напешите отзыв" />
             <button className={s.btn__review} type="submit" onClick={() => { }}>Отправить отзыв</button>
           </form>

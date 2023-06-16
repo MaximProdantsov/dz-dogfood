@@ -3,24 +3,24 @@ import { useForm } from "react-hook-form";
 import s from "./index.module.css"
 import { ReactComponent as EveOpen } from "../img/eye-open.svg";
 import { ReactComponent as EveClose } from "../img/eye-close.svg";
-import { useContext } from "react";
-import { CardsContext } from "../../context/context";
 import { useNavigate } from "react-router";
 import { api } from "../../api/api";
+import { useDispatch } from "react-redux";
+import { setModalActiv } from "../../storage/slice/modalSlice";
 
 
 export const LoginAccount = () => {
   const [isShown, setIsSHown] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm({});
-  const {setModalActiv} = useContext(CardsContext)
   const navigate = useNavigate();
+  const dispath = useDispatch()
 
 
   const onSubmit = async (data) => {
     try {
       const res =  await api.addUserAuthorization(data);
       localStorage.setItem('token', res.token)
-      setModalActiv(false)
+      dispath(setModalActiv(false))
     } catch (error) {
       alert(error)
     }
@@ -30,7 +30,7 @@ export const LoginAccount = () => {
     setIsSHown((isShown) => !isShown);
   }
   return <div className={s.container}>
-    <div className={s.close} onClick={()=>setModalActiv(false)}>x</div>
+    <div className={s.close} onClick={()=>dispath(setModalActiv(false))}>x</div>
     <h1>Вход</h1>
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
       <input className={s.input} type="text" {...register("email", { required: true })} placeholder="Email" />

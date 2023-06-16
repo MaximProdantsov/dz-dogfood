@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import './modal.css'
 
-export const Modal = ({ modalActiv, children }) => {
+export const Modal = ({  children }) => {
+  const {modalActiv} = useSelector(s=>s.modal)
 
   return <div className={modalActiv ? 'modal active' : 'modal'} >
     

@@ -1,17 +1,16 @@
 import React from "react";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { BtmBlack } from "../../components/BtmBlack/BtmBlack";
 import { CardList } from "../../components/CardList/CardList";
-import { CardsContext } from "../../context/context";
 import s from "./index.module.css"
 
 export const FavoritesPage = () => {
-const {favoriteCards} = useContext (CardsContext)
+const {favoriteCards} = useSelector (s=>s.products)
 
   return <div className={s.favoritesPage}>
     <BtmBlack />
     <h1 className={s.title}>Избранное</h1>
-    <CardList cards={favoriteCards}  />
+    <CardList products={favoriteCards}  />
   </div>
 }
 

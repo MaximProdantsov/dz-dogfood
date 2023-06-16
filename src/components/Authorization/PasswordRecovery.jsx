@@ -1,19 +1,20 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import s from "./index.module.css"
-import { useContext } from "react";
-import { CardsContext } from "../../context/context";
 import { useState } from "react";
 import { api } from "../../api/api";
 import { ReactComponent as EveOpen } from "../img/eye-open.svg";
 import { ReactComponent as EveClose } from "../img/eye-close.svg";
+import { setModalActiv } from "../../storage/slice/modalSlice";
+import { useDispatch } from "react-redux";
 
 
 export const PasswordRecovery = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({});
-  const { setModalActiv } = useContext(CardsContext)
   const [haveToken, setHaveToken] = useState(false)
   const [isShown, setIsSHown] = useState(false);
+  const dispatch = useDispatch()
+
 
 
   const togglePassword = () => {
@@ -27,18 +28,15 @@ export const PasswordRecovery = () => {
         console.log(data);
         const res = await api.addPasswordResetToken({ password: data.password }, data.token);
         localStorage.setItem('token', res.token)
-
-        setModalActiv(false)
-
+        dispatch(setModalActiv(false))
       } catch (error) {
         alert(error)
-
       }
 
     } else {
       try {
         console.log(data);
-        const res = await api.addPasswordReset(data);
+        await api.addPasswordReset(data);
         setHaveToken(true)
       } catch (error) {
         alert(error)
@@ -47,7 +45,7 @@ export const PasswordRecovery = () => {
   }
 
   return <div className={s.container}>
-    <div className={s.close} onClick={() => setModalActiv(false)}>x</div>
+    <div className={s.close} onClick={() => dispatch(setModalActiv(false))}>x</div>
     <h1>Восстановление пароля</h1>
     <div className={s.text}>Для получения временного пароля необходимо ввести email, указанный при регистрации. Вам придет код для сброса пароля.</div>
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>

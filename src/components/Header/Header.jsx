@@ -6,25 +6,20 @@ import { Link } from "react-router-dom";
 import { ReactComponent as Favorites } from "../img/favorites.svg";
 import { ReactComponent as Suitcase } from "../img/suitcase.svg";
 import { ReactComponent as Dog } from "../img/dog.svg";
-import { useContext } from "react";
-import { CardsContext } from "../../context/context";
+import { ReactComponent as LogoEntrance } from "../img/logo-entrance.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { setModalActiv } from "../../storage/slice/modalSlice";
 
 
 export const Header = () => {
-  const { favoriteCards, setModalActiv } = useContext(CardsContext)
-
-
-
-
+  const { favoriteCards } = useSelector(s => s.products)
   const location = useLocation()
+  const dispath = useDispatch()
 
   return <header className='header' >
     <div className="header__wrapper">
       <Link to='/'>
         <Logo />
-      </Link>
-      <Link to='/profile/data'>
-        <button>profile</button>
       </Link>
       {location.pathname === "/" && <Search />}
       <div className="icons">
@@ -35,8 +30,11 @@ export const Header = () => {
           </Link>
         </div>
         <Suitcase />
-        <Link to={'/registration'} onClick={() => setModalActiv(true)}>
-        <Dog ></Dog>
+        <Link to='/profile/data'>
+          <Dog />
+        </Link>
+        <Link to={'/registration'} onClick={() => dispath(setModalActiv(true))}>
+          <LogoEntrance />
         </Link>
 
 
