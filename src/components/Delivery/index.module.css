@@ -1,0 +1,30 @@
+.delivery {
+  display: flex;
+  gap: 10px;
+  background-color: rgba(236, 239, 241, 0.6);
+  border-radius: 12px;
+  padding: 12px;
+  align-items: flex-start;
+  width: 343px;
+}
+
+.delivery:not(.delivery:last-child) {
+  margin-bottom: 8px;
+}
+
+.text__header {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+
+}
+
+.text {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.bold {
+  font-weight: 700;
+}

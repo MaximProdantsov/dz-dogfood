@@ -9,14 +9,13 @@ const initialState = {
   products: [],
   loading: false,
   error: {},
-  favoriteCards: []
+  favoriteCards: [],
+  cartProduct: JSON.parse(localStorage.getItem('CartProduct')),
 }
-
 export const fetchProduct = createAsyncThunk('products/fetchProduct', async (_, { getState }) => {
   const state = await getState()
-  console.log(state);
   const data = await api.getProductList()
-  return { ...data, userId: state.user.data._id}
+  return { ...data, userId: state.user.data._id }
 })
 
 export const fetchChangeProducrLike = createAsyncThunk('products/fetchChangeProducrLike', async (data) => {
@@ -27,6 +26,8 @@ export const fetchChangeProducrLike = createAsyncThunk('products/fetchChangeProd
 export const fetchProductSearch = createAsyncThunk('products/fetchProductSearch', async (search) => {
   return api.searchProduct(search)
 })
+
+
 
 
 const productsSlice = createSlice({
@@ -57,7 +58,42 @@ const productsSlice = createSlice({
           state.products = state.products.sort((a, b) => a.price - b.price)
           break;
       }
-    }
+    },
+    setCartProduct: (state, action) => {
+      if (state.cartProduct.some((e) => e._id === action.payload._id)) {
+        return
+      } else {
+        state.cartProduct = [...state.cartProduct, { ...action.payload, countProduct: 1 }]
+        const stateJSON = JSON.stringify(state.cartProduct)
+        localStorage.setItem('CartProduct', stateJSON)
+      }
+    },
+    deletCartProduct: (state, action) => {
+      state.cartProduct = state.cartProduct.filter((e) => e._id !== action.payload)
+      const stateJSON = JSON.stringify(state.cartProduct)
+      localStorage.setItem('CartProduct', stateJSON)
+
+
+    },
+    setCountPlus: (state, action) => {
+      for (let i = 0; i < state.cartProduct.length; i++) {
+        if (state.cartProduct[i]._id === action.payload._id) {
+          state.cartProduct[i].countProduct++
+          return
+        }
+      }
+        },
+    setCountMinus: (state, action) => {
+      for (let i = 0; i < state.cartProduct.length; i++) {
+        if (state.cartProduct[i]._id === action.payload._id) {
+          if (state.cartProduct[i].countProduct < 2) {
+            return
+          } else {
+            state.cartProduct[i].countProduct--
+          }
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
@@ -93,6 +129,6 @@ const productsSlice = createSlice({
   }
 })
 
-export const { sortProducts } = productsSlice.actions
+export const { sortProducts, setCartProduct, deletCartProduct, setCountPlus, setCountMinus } = productsSlice.actions
 export default productsSlice.reducer
 

@@ -1,8 +1,7 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import { discountNumber, sklonenie } from "../../utilities/utilities";
 import { BtmBlack } from "../BtmBlack/BtmBlack";
 import s from "./index.module.css"
-import { ReactComponent as Auto } from "../img/auto.svg";
 import { ReactComponent as Medal } from "../img/medal.svg";
 import { ReactComponent as Like } from "../img/like.svg";
 import { useState } from "react";
@@ -12,8 +11,12 @@ import { api } from "../../api/api";
 import { useCallback } from "react";
 import { Rating } from "../Rating/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChangeProducrLike } from "../../storage/slice/productsSlice";
+import { fetchChangeProducrLike, setCartProduct } from "../../storage/slice/productsSlice";
 import { setModalActiv } from "../../storage/slice/modalSlice";
+import { Delivery } from "../Delivery/Delivery";
+import { BtmYellow } from "../BtmYellow/BtmYellow";
+import { setNotificatorActiv } from "../../storage/slice/notificatorSlice";
+import { Notificator } from "../Notificator/Notificator";
 
 const options = { year: 'numeric', month: 'long', day: 'numeric' }
 
@@ -22,7 +25,9 @@ export const Product = ({ product }) => {
   const [productIdReview, setProductIdReview] = useState({})
   const [myReting, setMyReting] = useState(5)
   const { _id } = useSelector(s => s.user.data)
-  const {modalActiv} = useSelector(s=>s.modal)
+  const { modalActiv } = useSelector(s => s.modal)
+  const { cartProduct } = useSelector(s => s.products)
+
   const dispath = useDispatch()
 
 
@@ -31,15 +36,23 @@ export const Product = ({ product }) => {
 
 
   const handleLike = useCallback(() => {
-    dispath(fetchChangeProducrLike({product, wasLike: isLike}))
+    dispath(fetchChangeProducrLike({ product, wasLike: isLike }))
     setIsLike(!isLike)
   }, [product, isLike, dispath])
 
   const onSubmit = useCallback(async ({ text }) => {
-    const res = await api.addProductReviews(product._id, { text, rating: myReting })
-    setProductIdReview(res.reviews)
-    reset()
-    dispath(setModalActiv(false))
+    try {
+      const res = await api.addProductReviews(product._id, { text, rating: myReting })
+      setProductIdReview(res.reviews)
+      reset()
+      dispath(setModalActiv(false))
+      dispath(setNotificatorActiv({ NotificatorActiv: true, text: 'Ваш отзыва успешно добавлен' }))
+
+    } catch (error) {
+      dispath(setModalActiv(false))
+      dispath(setNotificatorActiv({ NotificatorActiv: true, text: error.message }))
+      reset()
+    }
   }, [reset, product._id, dispath, myReting])
 
   const deletReviews = useCallback(async reviewId => {
@@ -53,6 +66,16 @@ export const Product = ({ product }) => {
     return Math.floor(sum / length)
   };
 
+  const addToBasket = useCallback(() => {
+    dispath(setCartProduct(product))
+    if (cartProduct.some((e) => e._id === product._id)) {
+      dispath(setNotificatorActiv({ NotificatorActiv: true, text: 'Товар уже добавлен в корзину' }))
+    } else {
+      dispath(setNotificatorActiv({ NotificatorActiv: true, text: 'Добавлено в корзину' }))
+    }
+  },[dispath, cartProduct, product])
+
+  
 
   useEffect(() => {
     const Like = product.likes.some((el) => el === _id)
@@ -70,7 +93,7 @@ export const Product = ({ product }) => {
     <div className={s.titleWrapper}>
 
       <BtmBlack />
-
+      <Notificator />
       <span className={s.productTitle}>{product.name}</span>
       {!!Object.keys(productIdReview).length &&
         <div className={s.rating}>
@@ -87,25 +110,13 @@ export const Product = ({ product }) => {
             <span className={`${s.price}   ${!!product.discount && s.newPrice}`}>{discountNumber(product.price, product.discount)}р</span>}
         </div >
         <div className={s.controls}>
-          <div className={s.controls__card}>
-            <span className={s.controls__cart__plus}>-</span>
-            <span className={s.controls__cart__num}>0</span>
-            <span className={s.controls__cart__plus}>+</span>
-          </div>
-          <span className={s.btn}>В корзину</span>
+          <BtmYellow onClick={addToBasket}>В корзину</BtmYellow>
         </div>
         <button className={isLike ? s.Like : s.noLike} onClick={() => handleLike()}>
           <Like />
           <span className={s.text__favorites}>{isLike ? 'В избранном' : 'В избранное'}</span>
         </button>
-        <div className={s.delivery}>
-          <Auto />
-          <div>
-            <span className={s.text__header}>Доставка по всему Миру! </span>
-            <p className={s.text}>Доставка курьером — <span className={s.bold}>  от 399 ₽</span>  </p>
-            <p className={s.text}>Доставка в пункт выдачи — <span className={s.bold}> от 199 ₽</span></p>
-          </div>
-        </div>
+        <Delivery />
         <div className={s.delivery}>
           <Medal />
           <div >
@@ -121,7 +132,7 @@ export const Product = ({ product }) => {
     </div>
     <div className={s.reviews}>
       <span className={s.price}>Отзывы</span>
-      <button className={s.btn__review} onClick={() => { dispath(setModalActiv(true))}}>Написать отзыв</button>
+      <button className={s.btn__review} onClick={() => { dispath(setModalActiv(true)) }}>Написать отзыв</button>
 
       {<Modal>
         {modalActiv && <div className={s.container__form}>

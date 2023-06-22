@@ -25,7 +25,6 @@ export const PasswordRecovery = () => {
   const onSubmit = async (data) => {
     if (haveToken) {
       try {
-        console.log(data);
         const res = await api.addPasswordResetToken({ password: data.password }, data.token);
         localStorage.setItem('token', res.token)
         dispatch(setModalActiv(false))
@@ -35,7 +34,6 @@ export const PasswordRecovery = () => {
 
     } else {
       try {
-        console.log(data);
         await api.addPasswordReset(data);
         setHaveToken(true)
       } catch (error) {

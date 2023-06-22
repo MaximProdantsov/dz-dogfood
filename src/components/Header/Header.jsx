@@ -12,9 +12,15 @@ import { setModalActiv } from "../../storage/slice/modalSlice";
 
 
 export const Header = () => {
-  const { favoriteCards } = useSelector(s => s.products)
+  const { isAuthorization } = useSelector(s => s.user)
+  const { favoriteCards, cartProduct } = useSelector(s => s.products)
   const location = useLocation()
   const dispath = useDispatch()
+
+  const SignOut = () =>{
+    localStorage.removeItem('token')
+    dispath(setModalActiv(true))
+  }
 
   return <header className='header' >
     <div className="header__wrapper">
@@ -29,15 +35,18 @@ export const Header = () => {
             {!!favoriteCards.length && <span className="babl">{favoriteCards.length}</span>}
           </Link>
         </div>
-        <Suitcase />
+        <div className="favorites__icons">
+          <Link to="/cart">
+            <Suitcase />
+            {!!cartProduct.length && <span className="babl">{cartProduct.length}</span>}
+          </Link>
+        </div>
         <Link to='/profile/data'>
           <Dog />
         </Link>
-        <Link to={'/registration'} onClick={() => dispath(setModalActiv(true))}>
+        {isAuthorization ? <Link to={'/LoginAccount'}> <LogoEntrance onClick={SignOut} /></Link>  : <Link to={'/registration'} onClick={() => dispath(setModalActiv(true))}>
           <LogoEntrance />
-        </Link>
-
-
+        </Link>}
       </div>
     </div>
   </header>

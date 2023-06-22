@@ -7,7 +7,8 @@ const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit")
 const initialState = {
   data: {},
   loading: false,
-  error: {}
+  error: {},
+  isAuthorization: false
 }
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
@@ -15,17 +16,21 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
 })
 
 export const uppdateUser = createAsyncThunk('user/uppdateUser', async (data) => {
-    return await api.uppdateUserMe({name: data.name, about: data.about})
+  return await api.uppdateUserMe({ name: data.name, about: data.about })
 })
 
 export const uppdateAvatar = createAsyncThunk('user/uppdateAvatar', async (data) => {
-    return await api.uppdateUserAvatar({avatar: data.avatar})
+  return await api.uppdateUserAvatar({ avatar: data.avatar })
 })
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setAuthorization: (state, action) => {
+      state.isAuthorization = action.payload
+    }
+  },
   extraReducers: (builder) => {
 
     builder.addCase(getUser.fulfilled, (state, action) => {
@@ -52,5 +57,5 @@ const userSlice = createSlice({
   }
 })
 
-
+export const { setAuthorization } = userSlice.actions
 export default userSlice.reducer
