@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CardList } from "../../components/CardList/CardList";
-import { Loading } from "../../components/Loading/Loading";
 import { NotFound } from "../../components/NotFound/NotFound";
 import { sortProducts } from "../../storage/slice/productsSlice";
 import { sklonenie } from "../../utilities/utilities";

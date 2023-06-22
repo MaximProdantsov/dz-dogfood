@@ -9,8 +9,14 @@
 
 }
 
+.cont__text__name{
+    width: 330px;
+}
+
 .container__left {
     display: flex;
+	justify-content: space-between;
+	align-items: center;
     gap: 20px;
     padding-top: 20px;
 }

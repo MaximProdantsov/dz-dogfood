@@ -33,7 +33,7 @@ export const CartProductPage = () => {
         <div>
           {cartProduct.map((e) => <div className={s.container__left} key={e._id}>
             <img className={s.img} src={e.pictures}  alt='Картинка'/>
-            <div>
+            <div className={s.cont__text__name}>
               <div className={s.text__name}>
                 {e.name}
               </div>
