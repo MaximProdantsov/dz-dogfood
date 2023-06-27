@@ -11,6 +11,7 @@ const initialState = {
   error: {},
   favoriteCards: [],
   cartProduct: JSON.parse(localStorage.getItem('CartProduct')),
+  totalCount: 0
 }
 export const fetchProduct = createAsyncThunk('products/fetchProduct', async (_, { getState }) => {
   const state = await getState()
@@ -59,11 +60,14 @@ const productsSlice = createSlice({
           break;
       }
     },
-    setCartProduct: (state, action) => {
+    addCartProduct: (state, action) => {
       if (state.cartProduct.some((e) => e._id === action.payload._id)) {
         return
       } else {
-        state.cartProduct = [...state.cartProduct, { ...action.payload, countProduct: 1 }]
+        action.payload.stock > 0 ?
+          state.cartProduct = [...state.cartProduct, { ...action.payload, countProduct: 1 }]
+          :
+          state.cartProduct = [...state.cartProduct, { ...action.payload, countProduct: 0 }]
         const stateJSON = JSON.stringify(state.cartProduct)
         localStorage.setItem('CartProduct', stateJSON)
       }
@@ -77,16 +81,18 @@ const productsSlice = createSlice({
     },
     setCountPlus: (state, action) => {
       for (let i = 0; i < state.cartProduct.length; i++) {
-        if (state.cartProduct[i]._id === action.payload._id) {
-          state.cartProduct[i].countProduct++
+        if (state.cartProduct[i]._id === action.payload) {
+          if (state.cartProduct[i].stock > state.cartProduct[i].countProduct) {
+            state.cartProduct[i].countProduct++
+          }
           return
         }
       }
-        },
+    },
     setCountMinus: (state, action) => {
       for (let i = 0; i < state.cartProduct.length; i++) {
-        if (state.cartProduct[i]._id === action.payload._id) {
-          if (state.cartProduct[i].countProduct < 2) {
+        if (state.cartProduct[i]._id === action.payload) {
+          if (state.cartProduct[i].countProduct < 1) {
             return
           } else {
             state.cartProduct[i].countProduct--
@@ -99,6 +105,7 @@ const productsSlice = createSlice({
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
       state.products = action.payload.products
       state.favoriteCards = state.products.filter((e) => e.likes.includes(action.payload.userId))
+      state.totalCount = action.payload.total
     })
     builder.addCase(fetchChangeProducrLike.fulfilled, (state, action) => {
       const uppdateCards = action.payload.uppdateCards
@@ -113,6 +120,7 @@ const productsSlice = createSlice({
     builder.addCase(fetchProductSearch.fulfilled, (state, action) => {
       state.products = action.payload
       action.payload.stateLoadingUser = false
+      state.totalCount = action.payload.length
     })
     builder.addMatcher(isLoading, (state, action) => {
       state.loading = true
@@ -129,6 +137,6 @@ const productsSlice = createSlice({
   }
 })
 
-export const { sortProducts, setCartProduct, deletCartProduct, setCountPlus, setCountMinus } = productsSlice.actions
+export const { sortProducts, addCartProduct, deletCartProduct, setCountPlus, setCountMinus } = productsSlice.actions
 export default productsSlice.reducer
 

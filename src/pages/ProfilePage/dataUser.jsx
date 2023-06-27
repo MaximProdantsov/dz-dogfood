@@ -30,7 +30,7 @@ export const DataUser = () => {
         <h1 className={s.title}>Мои данные</h1>
         <div className={s.container}>
           <div >
-            <img className={s.img} src={avatar} alt="ссылка на картинку" />
+            <img className={s.Img} src={avatar} alt="ссылка на картинку" />
             <div >
 
               <form className={s.form} onSubmit={handleSubmit(changeAvatar)}>

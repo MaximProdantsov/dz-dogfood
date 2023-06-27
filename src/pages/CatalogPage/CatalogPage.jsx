@@ -10,7 +10,9 @@ export const CatalogPage = () => {
   const { search } = useSelector(s => s.search)
   const { products } = useSelector(s => s.products)
   const dispath = useDispatch()
+
   const sortItem = [{ id: 'popular', title: 'Популярные' }, { id: 'new', title: 'Новинки' }, { id: 'cheap', title: 'Сначала дешевые' }, { id: 'expensive', title: 'Сначала дорогие' }, { id: 'rating', title: 'По рейтингу' }, { id: 'discount', title: 'По скидке' }]
+
   return (
     <>
       <div className={s.catalogPage}>

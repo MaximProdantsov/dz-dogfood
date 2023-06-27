@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./index.module.css"
-import { ReactComponent as Auto } from "../img/auto.svg";
+import { ReactComponent as Auto } from "../Img/auto.svg";
 
 
 

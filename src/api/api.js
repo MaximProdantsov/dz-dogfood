@@ -1,13 +1,6 @@
 const config = {
   baseUrl: 'https://api.react-learning.ru',
   groupId: '/v2/group-12',
-  
-  // freshHeaders: () => {
-  //   return {
-  //       authorization: localStorage.getItem('token'),
-  //       'Content-Type': 'application/json',
-  //   }
-  // }
 }
 const onResponse = (res) => {
   return res.ok ? res.json() : res.json().then(res => Promise.reject(res))

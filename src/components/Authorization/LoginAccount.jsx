@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import s from "./index.module.css"
-import { ReactComponent as EveOpen } from "../img/eye-open.svg";
-import { ReactComponent as EveClose } from "../img/eye-close.svg";
+import { ReactComponent as EveOpen } from "../Img/eye-open.svg";
+import { ReactComponent as EveClose } from "../Img/eye-close.svg";
 import { useNavigate } from "react-router";
 import { api } from "../../api/api";
 import { useDispatch } from "react-redux";
@@ -48,7 +48,7 @@ export const LoginAccount = () => {
       {errors.password && <span className={s.error}>Пароль должен состоять из цифр и латинских букв верхнего и нижнего регистра</span>}
 
 
-      <div className={s.text__btn} onClick={() => { navigate('/PasswordRecovery') }}>Восстановление пароля</div>
+      <div className={s.text__btn} onClick={() => { navigate('/recovery') }}>Восстановление пароля</div>
       <button className={s.btn} type="submit" onClick={() => { }}>Войти</button>
       <button className={s.btn2} type="button" onClick={() => { navigate('/registration') }}>Регистрация</button>
       <div className={s.eye} onClick={togglePassword}>

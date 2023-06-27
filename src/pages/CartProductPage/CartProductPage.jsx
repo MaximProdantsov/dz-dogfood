@@ -4,10 +4,13 @@ import s from './index.module.css'
 import cn from "classnames";
 import { discountNumber, sklonenie } from "../../utilities/utilities";
 import { BtmBlack } from "../../components/BtmBlack/BtmBlack";
-import { ReactComponent as Trash } from "../../components/img/ic-trash.svg";
+import { ReactComponent as Trash } from "../../components/Img/ic-trash.svg";
 import { deletCartProduct } from "../../storage/slice/productsSlice";
 import { ProductCounter } from "../../components/ProductCounter/ProductCounter";
 import { Delivery } from "../../components/Delivery/Delivery";
+import { Notificator } from "../../components/Notificator/Notificator";
+import { useEffect } from "react";
+import { setNotificatorActiv } from "../../storage/slice/notificatorSlice";
 
 
 
@@ -22,8 +25,14 @@ export const CartProductPage = () => {
   const generalCountProduct = cartProduct.reduce((accum, el) =>
     accum + el.countProduct, 0
   )
+  useEffect(() => {
+    if (cartProduct.some((e) => e.stock === e.countProduct && e.stock !== 0)) {
+      dispatch(setNotificatorActiv({ NotificatorActiv: true, text: 'Максимальное количество' }))
+    }
+  }, [dispatch, cartProduct])
 
   return <>
+    <Notificator />
     <div className={s.wrapper}>
       <BtmBlack />
       <div className={s.text__title}>
@@ -32,7 +41,7 @@ export const CartProductPage = () => {
       <div className={s.container}>
         <div>
           {cartProduct.map((e) => <div className={s.container__left} key={e._id}>
-            <img className={s.img} src={e.pictures}  alt='Картинка'/>
+            <img className={s.Img} src={e.pictures} alt='Картинка' />
             <div className={s.cont__text__name}>
               <div className={s.text__name}>
                 {e.name}
@@ -42,10 +51,11 @@ export const CartProductPage = () => {
               </div>
             </div>
             <ProductCounter product={e} />
-            <div>
-              <div className={cn(s.price, { [s.oldPrice]: e.discount })}>{e.price * e.countProduct} p.</div>
-              {!!e.discount && <div className={s.newPrice}> {discountNumber(e.price, e.discount) * e.countProduct} р.</div>}
-            </div>
+            {e.stock > 0 &&
+              <div>
+                <div className={cn(s.price, { [s.oldPrice]: e.discount })}>{e.price * e.countProduct} p.</div>
+                {!!e.discount && <div className={s.newPrice}> {discountNumber(e.price, e.discount) * e.countProduct} р.</div>}
+              </div>}
             <Trash className={s.icons} onClick={() => { dispatch(deletCartProduct(e._id)) }} />
           </div>)}
         </div>

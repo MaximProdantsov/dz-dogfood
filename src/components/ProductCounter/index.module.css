@@ -21,3 +21,10 @@
   font-size: 21px;
   font-weight: 700;
 }
+
+.text {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css"
-import { ReactComponent as Logo } from "../img/logo.svg"
+import { ReactComponent as Logo } from "../Img/logo.svg"
 
 export const Footer = React.memo( () => {
   return <footer className="footer">

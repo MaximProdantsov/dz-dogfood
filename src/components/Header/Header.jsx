@@ -1,12 +1,12 @@
 import "./index.css"
-import { ReactComponent as Logo } from "../img/logo.svg"
+import { ReactComponent as Logo } from "../Img/logo.svg"
 import { Search } from "../Search/Search";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
-import { ReactComponent as Favorites } from "../img/favorites.svg";
-import { ReactComponent as Suitcase } from "../img/suitcase.svg";
-import { ReactComponent as Dog } from "../img/dog.svg";
-import { ReactComponent as LogoEntrance } from "../img/logo-entrance.svg";
+import { ReactComponent as Favorites } from "../Img/favorites.svg";
+import { ReactComponent as Suitcase } from "../Img/suitcase.svg";
+import { ReactComponent as Dog } from "../Img/dog.svg";
+import { ReactComponent as LogoEntrance } from "../Img/logo-entrance.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalActiv } from "../../storage/slice/modalSlice";
 
@@ -44,7 +44,7 @@ export const Header = () => {
         <Link to='/profile/data'>
           <Dog />
         </Link>
-        {isAuthorization ? <Link to={'/LoginAccount'}> <LogoEntrance onClick={SignOut} /></Link>  : <Link to={'/registration'} onClick={() => dispath(setModalActiv(true))}>
+        {isAuthorization ? <Link to={'/login'}> <LogoEntrance onClick={SignOut} /></Link>  : <Link to={'/registration'} onClick={() => dispath(setModalActiv(true))}>
           <LogoEntrance />
         </Link>}
       </div>

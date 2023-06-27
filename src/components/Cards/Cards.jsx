@@ -1,12 +1,14 @@
 import React from "react";
 import "./index.css"
-import { ReactComponent as Like } from "../img/like.svg";
+import { ReactComponent as Like } from "../Img/like.svg";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChangeProducrLike, setCartProduct } from "../../storage/slice/productsSlice";
-import { BtmYellow } from "../BtmYellow/BtmYellow";
+import { fetchChangeProducrLike, addCartProduct, deletCartProduct } from "../../storage/slice/productsSlice";
+import { Btm } from "../Btm/Btm";
 import { setNotificatorActiv } from "../../storage/slice/notificatorSlice";
 import { useCallback } from "react";
+import { ProductCounter } from "../ProductCounter/ProductCounter";
+import { useEffect } from "react";
 
 
 
@@ -14,22 +16,32 @@ export const Cards = ({ product }) => {
   const { _id } = useSelector(s => s.user.data)
   const { cartProduct } = useSelector(s => s.products)
   const dispatch = useDispatch()
-
   const isLike = product.likes.some((el) => el === _id)
   const pressLike = () => {
     dispatch(fetchChangeProducrLike({ product, wasLike: isLike }))
   }
+  const cartProductThis = cartProduct.find((e) => e._id === product._id)
+
 
   const addToBasket = useCallback(() => {
-    dispatch(setCartProduct(product))
     if (cartProduct.some((e) => e._id === product._id)) {
       dispatch(setNotificatorActiv({ NotificatorActiv: true, text: 'Товар уже добавлен в корзину' }))
-
     } else {
-
+      dispatch(addCartProduct(product))
       dispatch(setNotificatorActiv({ NotificatorActiv: true, text: 'Добавлено в корзину' }))
     }
-  },[dispatch, cartProduct, product])
+  }, [cartProduct, dispatch, product])
+
+  useEffect(() => {
+    if (cartProductThis?.stock === 0) {
+      return
+    } else if (cartProductThis && cartProductThis?.countProduct === 0) {
+      dispatch(deletCartProduct(cartProductThis._id))
+      dispatch(setNotificatorActiv({ NotificatorActiv: true, text: 'Удалено из корзины' }))
+
+    }
+  }, [dispatch, cartProductThis])
+
 
   return <>
     <div className="cards">
@@ -47,7 +59,11 @@ export const Cards = ({ product }) => {
         </div>
         <p className='card__name'>{product.name}</p>
       </Link>
-      <BtmYellow onClick={addToBasket}>В корзину</BtmYellow>
+      {cartProductThis || cartProductThis?.stock === 0 ?
+        <ProductCounter product={cartProductThis} />
+        :
+        <Btm backgroundColor='#FFE44D' onClick={addToBasket}>В корзину</Btm>
+      }
     </div>
   </>
 }

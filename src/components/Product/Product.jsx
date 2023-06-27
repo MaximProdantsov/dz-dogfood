@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { discountNumber, sklonenie } from "../../utilities/utilities";
 import { BtmBlack } from "../BtmBlack/BtmBlack";
 import s from "./index.module.css"
-import { ReactComponent as Medal } from "../img/medal.svg";
-import { ReactComponent as Like } from "../img/like.svg";
+import { ReactComponent as Medal } from "../Img/medal.svg";
+import { ReactComponent as Like } from "../Img/like.svg";
 import { useState } from "react";
 import { Modal } from "../Modal/Modal";
 import { useForm } from "react-hook-form";
@@ -11,12 +11,13 @@ import { api } from "../../api/api";
 import { useCallback } from "react";
 import { Rating } from "../Rating/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChangeProducrLike, setCartProduct } from "../../storage/slice/productsSlice";
+import { fetchChangeProducrLike, addCartProduct, deletCartProduct } from "../../storage/slice/productsSlice";
 import { setModalActiv } from "../../storage/slice/modalSlice";
 import { Delivery } from "../Delivery/Delivery";
-import { BtmYellow } from "../BtmYellow/BtmYellow";
+import { Btm } from "../Btm/Btm";
 import { setNotificatorActiv } from "../../storage/slice/notificatorSlice";
 import { Notificator } from "../Notificator/Notificator";
+import { ProductCounter } from "../ProductCounter/ProductCounter";
 
 const options = { year: 'numeric', month: 'long', day: 'numeric' }
 
@@ -66,16 +67,28 @@ export const Product = ({ product }) => {
     return Math.floor(sum / length)
   };
 
+  const cartProductThis = cartProduct.find((e) => e._id === product._id)
+
   const addToBasket = useCallback(() => {
-    dispath(setCartProduct(product))
+    dispath(addCartProduct(product))
     if (cartProduct.some((e) => e._id === product._id)) {
       dispath(setNotificatorActiv({ NotificatorActiv: true, text: 'Товар уже добавлен в корзину' }))
     } else {
       dispath(setNotificatorActiv({ NotificatorActiv: true, text: 'Добавлено в корзину' }))
     }
-  },[dispath, cartProduct, product])
+  }, [dispath, cartProduct, product])
 
-  
+  useEffect(() => {
+    if (cartProductThis?.stock === 0) {
+      return
+    } else if (cartProductThis && cartProductThis?.countProduct === 0) {
+      dispath(deletCartProduct(cartProductThis._id))
+      dispath(setNotificatorActiv({ NotificatorActiv: true, text: 'Удалено из корзины' }))
+
+    }
+  }, [dispath, cartProductThis])
+
+
 
   useEffect(() => {
     const Like = product.likes.some((el) => el === _id)
@@ -102,7 +115,7 @@ export const Product = ({ product }) => {
         </div>}
     </div>
     <div className={s.imgWrapper}>
-      <img className={s.img} src={product.pictures} alt="Ссылка на картинку" />
+      <img className={s.Img} src={product.pictures} alt="Ссылка на картинку" />
       <div className={s.container__left}>
         <div className={s.desc}>
           <span className={`${s.price}   ${!!product.discount && s.oldPrice}`}>{product.price}р</span>
@@ -110,7 +123,11 @@ export const Product = ({ product }) => {
             <span className={`${s.price}   ${!!product.discount && s.newPrice}`}>{discountNumber(product.price, product.discount)}р</span>}
         </div >
         <div className={s.controls}>
-          <BtmYellow onClick={addToBasket}>В корзину</BtmYellow>
+          {cartProductThis || cartProductThis?.stock === 0 ?
+            <ProductCounter product={cartProductThis} />
+            :
+            <Btm backgroundColor='#FFE44D' onClick={addToBasket}>В корзину</Btm>
+          }
         </div>
         <button className={isLike ? s.Like : s.noLike} onClick={() => handleLike()}>
           <Like />

@@ -40,17 +40,17 @@ function App() {
     } else {
       dispatch(setModalActiv(true))
       switch (location.pathname) {
-        case '/LoginAccount':
-          navigate('/LoginAccount')
+        case '/login':
+          navigate('/login')
           break;
-        case '/PasswordRecovery':
-          navigate('/PasswordRecovery')
+        case '/recovery':
+          navigate('/recovery')
           break;
         case '/registration':
           navigate('/registration')
           break;
         default:
-          navigate('/LoginAccount')
+          navigate('/login')
       }
     }
 
@@ -63,7 +63,6 @@ function App() {
       {isAuthorization ?
         <Routes>
           <Route path='/' element={<CatalogPage />} />
-          <Route path='*' element={<NotFound />} />
           <Route path='/product/:id' element={<ProductPage />} />
           <Route path='/cart' element={<CartProductPage />} />
           <Route path='/favorites' element={<FavoritesPage />} />
@@ -71,26 +70,26 @@ function App() {
           <Route path='/registration' element={<Modal  >
             <Registration />
           </Modal>} />
-          <Route path='/LoginAccount' element={<Modal  >
+          <Route path='/login' element={<Modal  >
             <LoginAccount />
           </Modal>} />
-          <Route path='/PasswordRecovery' element={<Modal  >
+          <Route path='/recovery' element={<Modal  >
             <PasswordRecovery />
           </Modal>} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
         :
         <Routes>
-          <Route path='/' element={<CatalogPage />} />
-          <Route path='/LoginAccount' element={<Modal  >
+          <Route path='/login' element={<Modal  >
             <LoginAccount />
           </Modal>} />
           <Route path='/registration' element={<Modal  >
             <Registration />
           </Modal>} />
-          <Route path='/LoginAccount' element={<Modal  >
+          <Route path='/login' element={<Modal  >
             <LoginAccount />
           </Modal>} />
-          <Route path='/PasswordRecovery' element={<Modal  >
+          <Route path='/recovery' element={<Modal  >
             <PasswordRecovery />
           </Modal>} />
         </Routes>

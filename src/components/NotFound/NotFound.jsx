@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./index.module.css"
-import { ReactComponent as Emoticon } from "../img/sadEmoticon.svg";
+import { ReactComponent as Emoticon } from "../Img/sadEmoticon.svg";
 import { useDispatch } from "react-redux";
 import { setSearch } from "../../storage/slice/searchSlice";
 import { Link } from "react-router-dom";

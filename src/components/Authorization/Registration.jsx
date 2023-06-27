@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import s from "./index.module.css"
-import { ReactComponent as EveOpen } from "../img/eye-open.svg";
-import { ReactComponent as EveClose } from "../img/eye-close.svg";
+import { ReactComponent as EveOpen } from "../Img/eye-open.svg";
+import { ReactComponent as EveClose } from "../Img/eye-close.svg";
 import { useNavigate } from "react-router";
 import { api } from "../../api/api";
 import { useDispatch } from "react-redux";
@@ -43,7 +43,7 @@ export const Registration = () => {
 
       <div className={s.text}>Регистрируясь на сайте, вы соглашаетесь с нашими Правилами и Политикой конфиденциальности и соглашаетесь на информационную рассылку.</div>
       <button className={s.btn} type="submit" onClick={() => { }}>Зарегистрироваться</button>
-      <button className={s.btn2} type="button" onClick={() => { navigate('/LoginAccount') }}>Войти</button>
+      <button className={s.btn2} type="button" onClick={() => { navigate('/login') }}>Войти</button>
       <div className={s.eye} onClick={togglePassword}>
         {isShown ? <EveClose /> : <EveOpen />}
       </div>

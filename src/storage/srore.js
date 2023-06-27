@@ -1,5 +1,6 @@
 import modalSlice from "./slice/modalSlice";
 import notificatorSlice from "./slice/notificatorSlice";
+import paginationSlise from "./slice/paginationSlise";
 import searchSlice from "./slice/searchSlice";
 
 const { configureStore } = require("@reduxjs/toolkit");
@@ -13,7 +14,8 @@ const store = configureStore({
     products: productsSlice,
     modal: modalSlice,
     search: searchSlice,
-    notificator: notificatorSlice
+    notificator: notificatorSlice,
+    pagination : paginationSlise
   }
 })
 

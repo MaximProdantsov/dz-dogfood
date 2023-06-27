@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import s from "./index.module.css"
 import { useState } from "react";
 import { api } from "../../api/api";
-import { ReactComponent as EveOpen } from "../img/eye-open.svg";
-import { ReactComponent as EveClose } from "../img/eye-close.svg";
+import { ReactComponent as EveOpen } from "../Img/eye-open.svg";
+import { ReactComponent as EveClose } from "../Img/eye-close.svg";
 import { setModalActiv } from "../../storage/slice/modalSlice";
 import { useDispatch } from "react-redux";
 

@@ -1,0 +1,20 @@
+.pages {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  
+}
+
+.page,
+.current-page {
+  border: 1px solid lightgray;
+  border-radius: 100%;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.current-page {
+  border: 3px solid #FFE44D;
+  font-weight: 700;
+}

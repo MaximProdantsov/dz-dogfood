@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./index.module.css";
-import { ReactComponent as Star } from "../img/empty-star.svg";
+import { ReactComponent as Star } from "../Img/empty-star.svg";
 import { useState } from "react";
 import { useEffect } from "react";
 import cn from "classnames";
