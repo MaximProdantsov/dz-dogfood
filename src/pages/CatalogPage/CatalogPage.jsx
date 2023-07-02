@@ -29,9 +29,12 @@ export const CatalogPage = () => {
             return <span className={s.sortItem} key={el.id} onClick={() => dispath(sortProducts(el.id))}>{el.title}</span>
           })}
         </div>}
-        <Pagination />
-        {products.length === 0 ? <NotFound /> : <CardList products={currentProducts} />}
-        <Pagination />
+        {products.length === 0 ? <NotFound /> :
+          <>
+            <Pagination />
+            <CardList products={currentProducts} />
+            <Pagination />
+          </>}
       </div>
 
     </>
