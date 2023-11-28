@@ -17,16 +17,16 @@ import { setNotificatorActiv } from "../../storage/slice/notificatorSlice";
 export const CartProductPage = () => {
   const { cartProduct } = useSelector(s => s.products)
   const dispatch = useDispatch()
-  const costProducts = cartProduct.reduce((accum, el) =>
+  const costProducts = cartProduct?.reduce((accum, el) =>
     accum + el.countProduct * el.price, 0)
-  const totalDiscount = costProducts - cartProduct.reduce((accum, e) =>
+  const totalDiscount = costProducts - cartProduct?.reduce((accum, e) =>
     accum + e.countProduct * discountNumber(e.price, e.discount), 0)
   const totalCost = costProducts - totalDiscount
-  const generalCountProduct = cartProduct.reduce((accum, el) =>
+  const generalCountProduct = cartProduct?.reduce((accum, el) =>
     accum + el.countProduct, 0
   )
   useEffect(() => {
-    if (cartProduct.some((e) => e.stock === e.countProduct && e.stock !== 0)) {
+    if (cartProduct?.some((e) => e.stock === e.countProduct && e.stock !== 0)) {
       dispatch(setNotificatorActiv({ NotificatorActiv: true, text: 'Максимальное количество' }))
     }
   }, [dispatch, cartProduct])
@@ -36,11 +36,11 @@ export const CartProductPage = () => {
     <div className={s.wrapper}>
       <BtmBlack />
       <div className={s.text__title}>
-        <b>{cartProduct.length} {sklonenie(cartProduct.length, ['товар', 'товара', 'товаров'])} </b> в корзине
+        <b>{cartProduct?.length} {sklonenie(cartProduct?.length, ['товар', 'товара', 'товаров'])} </b> в корзине
       </div>
       <div className={s.container}>
         <div>
-          {cartProduct.map((e) => <div className={s.container__left} key={e._id}>
+          {cartProduct?.map((e) => <div className={s.container__left} key={e._id}>
             <img className={s.Img} src={e.pictures} alt='Картинка' />
             <div className={s.cont__text__name}>
               <div className={s.text__name}>

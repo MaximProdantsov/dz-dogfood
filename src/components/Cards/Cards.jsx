@@ -20,11 +20,13 @@ export const Cards = ({ product }) => {
   const pressLike = () => {
     dispatch(fetchChangeProducrLike({ product, wasLike: isLike }))
   }
-  const cartProductThis = cartProduct.find((e) => e._id === product._id)
+ 
+  const cartProductThis = cartProduct?.find((e) => e._id === product._id)
+  console.log(cartProductThis);
 
 
   const addToBasket = useCallback(() => {
-    if (cartProduct.some((e) => e._id === product._id)) {
+    if (cartProduct?.some((e) => e._id === product._id)) {
       dispatch(setNotificatorActiv({ NotificatorActiv: true, text: 'Товар уже добавлен в корзину' }))
     } else {
       dispatch(addCartProduct(product))

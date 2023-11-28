@@ -67,7 +67,7 @@ export const Product = ({ product }) => {
     return Math.floor(sum / length)
   };
 
-  const cartProductThis = cartProduct.find((e) => e._id === product._id)
+  const cartProductThis = cartProduct?.find((e) => e._id === product._id)
 
   const addToBasket = useCallback(() => {
     dispath(addCartProduct(product))

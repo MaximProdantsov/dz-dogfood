@@ -10,7 +10,7 @@ const initialState = {
   loading: false,
   error: {},
   favoriteCards: [],
-  cartProduct: JSON.parse(localStorage.getItem('CartProduct')),
+  cartProduct: JSON.parse(localStorage.getItem('CartProduct')) === null ? [] : JSON.parse(localStorage.getItem('CartProduct')),
   totalCount: 0
 }
 export const fetchProduct = createAsyncThunk('products/fetchProduct', async (_, { getState }) => {
@@ -64,7 +64,7 @@ const productsSlice = createSlice({
       if (state.cartProduct.some((e) => e._id === action.payload._id)) {
         return
       } else {
-        action.payload.stock > 0 ?
+        action.payload && action.payload.stock > 0 ?
           state.cartProduct = [...state.cartProduct, { ...action.payload, countProduct: 1 }]
           :
           state.cartProduct = [...state.cartProduct, { ...action.payload, countProduct: 0 }]

@@ -32,13 +32,13 @@ export const Header = () => {
         <div className="favorites__icons">
           <Link to="/favorites">
             <Favorites />
-            {!!favoriteCards.length && <span className="babl">{favoriteCards.length}</span>}
+            {!!favoriteCards?.length && <span className="babl">{favoriteCards?.length}</span>}
           </Link>
         </div>
         <div className="favorites__icons">
           <Link to="/cart">
             <Suitcase />
-            {!!cartProduct.length && <span className="babl">{cartProduct.length}</span>}
+            {!!cartProduct?.length && <span className="babl">{cartProduct?.length}</span>}
           </Link>
         </div>
         <Link to='/profile/data'>
