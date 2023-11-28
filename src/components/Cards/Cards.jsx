@@ -10,8 +10,6 @@ import { useCallback } from "react";
 import { ProductCounter } from "../ProductCounter/ProductCounter";
 import { useEffect } from "react";
 
-
-
 export const Cards = ({ product }) => {
   const { _id } = useSelector(s => s.user.data)
   const { cartProduct } = useSelector(s => s.products)
